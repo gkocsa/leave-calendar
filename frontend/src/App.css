@@ -1,0 +1,104 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f4f6f8;
+  color: #222;
+}
+
+.page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 32px;
+}
+
+.card {
+  background: white;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.form {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+input,
+select,
+button {
+  padding: 10px;
+  font-size: 14px;
+}
+
+button {
+  cursor: pointer;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  text-align: left;
+}
+
+.conflict {
+  background: #ffe2e2;
+}
+
+.card ul {
+  list-style: none;
+  padding-left: 0;
+  text-align: center;
+}
+
+.btn {
+  border: none;
+  border-radius: 6px;
+  color: white;
+  margin-right: 6px;
+  padding: 8px 10px;
+}
+
+.approve {
+  background: #2e7d32;
+}
+
+.reject {
+  background: #ef6c00;
+}
+
+.delete {
+  background: #c62828;
+}
+
+.pending-row {
+  background: #fff8d6;
+}
+
+.toggle-button {
+  width: 100%;
+  border: none;
+  border-radius: 8px;
+  background: #1976d2;
+  color: white;
+  padding: 12px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.team-list {
+  margin-top: 16px;
+  text-align: center;
+}
+
+.team-list ul {
+  list-style: none;
+  padding-left: 0;
+}
