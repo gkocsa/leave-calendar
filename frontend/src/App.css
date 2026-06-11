@@ -102,3 +102,10 @@ td {
   list-style: none;
   padding-left: 0;
 }
+
+.filters {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}

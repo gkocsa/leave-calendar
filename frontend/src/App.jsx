@@ -9,6 +9,11 @@ export default function App() {
   const [onCallSchedule, setOnCallSchedule] = useState([]);
   const [showTeamMembers, setShowTeamMembers] = useState(false);
 
+  const [filters, setFilters] = useState({
+    teamMemberId: "",
+    status: ""
+  });
+
   const [form, setForm] = useState({
     teamMemberId: "",
     startDate: "",
@@ -18,11 +23,25 @@ export default function App() {
 
   useEffect(() => {
     loadData();
-  }, []);
+  }, [filters.teamMemberId, filters.status]);
 
   async function loadData() {
+    const params = new URLSearchParams();
+
+    if (filters.teamMemberId) {
+      params.append("teamMemberId", filters.teamMemberId);
+    }
+
+    if (filters.status) {
+      params.append("status", filters.status);
+    }
+
+    const leaveUrl = `${API_BASE}/api/leave-requests${
+      params.toString() ? `?${params.toString()}` : ""
+    }`;
+
     const members = await fetch(`${API_BASE}/api/team-members`).then(r => r.json());
-    const leaves = await fetch(`${API_BASE}/api/leave-requests`).then(r => r.json());
+    const leaves = await fetch(leaveUrl).then(r => r.json());
     const schedule = await fetch(`${API_BASE}/api/on-call?from=2026-07-01&weeks=5`).then(r => r.json());
 
     setTeamMembers(members);
@@ -152,8 +171,39 @@ export default function App() {
       <section className="card">
         <h2>Leave Requests</h2>
 
+        <div className="filters">
+          <select
+            value={filters.teamMemberId}
+            onChange={e => setFilters({ ...filters, teamMemberId: e.target.value })}
+          >
+            <option value="">All team members</option>
+            {teamMembers.map(member => (
+              <option key={member.id} value={member.id}>
+                {member.name}
+              </option>
+            ))}
+          </select>
+
+          <select
+            value={filters.status}
+            onChange={e => setFilters({ ...filters, status: e.target.value })}
+          >
+            <option value="">All statuses</option>
+            <option value="PENDING">Pending</option>
+            <option value="APPROVED">Approved</option>
+            <option value="REJECTED">Rejected</option>
+          </select>
+
+          <button
+            type="button"
+            onClick={() => setFilters({ teamMemberId: "", status: "" })}
+          >
+            Clear filters
+          </button>
+        </div>
+
         {leaveRequests.length === 0 ? (
-          <p>No leave requests yet.</p>
+          <p>No leave requests found.</p>
         ) : (
           <table>
             <thead>

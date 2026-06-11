@@ -113,6 +113,13 @@ public class LeaveRequestService {
         return toDto(saved);
     }
 
+    public List<LeaveRequestDto> listLeaveRequests(Long teamMemberId, LeaveStatus status) {
+        return leaveRequestRepository.findByFilters(teamMemberId, status)
+                .stream()
+                .map(this::toDto)
+                .toList();
+    }
+
     private LeaveRequestDto toDto(LeaveRequest leaveRequest) {
         return new LeaveRequestDto(
                 leaveRequest.getId(),

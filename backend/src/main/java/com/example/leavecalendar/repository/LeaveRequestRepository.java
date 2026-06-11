@@ -4,6 +4,7 @@ import com.example.leavecalendar.entity.LeaveRequest;
 import com.example.leavecalendar.enums.LeaveStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -33,4 +34,14 @@ public interface LeaveRequestRepository extends JpaRepository<LeaveRequest, Long
                 and l.endDate >= :weekStart
             """)
     List<LeaveRequest> findApprovedConflicts(Long teamMemberId, LocalDate weekStart, LocalDate weekEnd);
+
+    @Query("""
+                select l from LeaveRequest l
+                where (:teamMemberId is null or l.teamMember.id = :teamMemberId)
+                and (:status is null or l.status = :status)
+                order by l.startDate
+            """)
+    List<LeaveRequest> findByFilters(
+            @Param("teamMemberId") Long teamMemberId,
+            @Param("status") LeaveStatus status);
 }

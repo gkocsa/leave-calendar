@@ -23,12 +23,9 @@ public class LeaveRequestController {
 
     @GetMapping
     public List<LeaveRequestDto> listLeaveRequests(
+            @RequestParam(required = false) Long teamMemberId,
             @RequestParam(required = false) LeaveStatus status) {
-        if (status != null) {
-            return leaveRequestService.listByStatus(status);
-        }
-
-        return leaveRequestService.listLeaveRequests();
+        return leaveRequestService.listLeaveRequests(teamMemberId, status);
     }
 
     @PostMapping

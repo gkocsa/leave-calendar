@@ -52,3 +52,4 @@ http://localhost:8080/api/team-members
 ## Optional improvements
 - endpoints for deleting, updating leave requests
 - Dockerization
+- Added filtering for by team member or status
