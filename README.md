@@ -73,8 +73,8 @@ http://localhost:8080/api/team-members
 
 ## Optional Features Not Completed
 
-* Optional calendar month view
-* Optional automatic on-call replacement suggestion
+* Calendar month view
+* Automatic on-call replacement suggestion
 * More advanced leave approval workflow
 * More advanced visual conflict highlighting
 
