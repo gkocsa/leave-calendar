@@ -1,3 +1,36 @@
+:root {
+  color-scheme: light;
+}
+
+html,
+body {
+  background: #f4f6f8;
+  color: #222;
+}
+
+h1,
+h2,
+h3,
+p,
+th,
+td,
+li,
+label {
+  color: #222;
+}
+
+input,
+select,
+textarea {
+  background: white;
+  color: #222;
+  border: 1px solid #ccc;
+}
+
+input::placeholder {
+  color: #777;
+}
+
 body {
   margin: 0;
   font-family: Arial, sans-serif;
