@@ -11,14 +11,21 @@ export default function App() {
 
   const [filters, setFilters] = useState({
     teamMemberId: "",
-    status: ""
+    status: "",
+  });
+
+  const [commentModal, setCommentModal] = useState({
+    isOpen: false,
+    leaveRequestId: null,
+    teamMemberName: "",
+    comment: "",
   });
 
   const [form, setForm] = useState({
     teamMemberId: "",
     startDate: "",
     endDate: "",
-    reason: ""
+    reason: "",
   });
 
   useEffect(() => {
@@ -40,9 +47,13 @@ export default function App() {
       params.toString() ? `?${params.toString()}` : ""
     }`;
 
-    const members = await fetch(`${API_BASE}/api/team-members`).then(r => r.json());
-    const leaves = await fetch(leaveUrl).then(r => r.json());
-    const schedule = await fetch(`${API_BASE}/api/on-call?from=2026-07-01&weeks=5`).then(r => r.json());
+    const members = await fetch(`${API_BASE}/api/team-members`).then((r) =>
+      r.json(),
+    );
+    const leaves = await fetch(leaveUrl).then((r) => r.json());
+    const schedule = await fetch(
+      `${API_BASE}/api/on-call?from=2026-07-01&weeks=5`,
+    ).then((r) => r.json());
 
     setTeamMembers(members);
     setLeaveRequests(leaves);
@@ -55,12 +66,12 @@ export default function App() {
     const response = await fetch(`${API_BASE}/api/leave-requests`, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
         ...form,
-        teamMemberId: Number(form.teamMemberId)
-      })
+        teamMemberId: Number(form.teamMemberId),
+      }),
     });
 
     if (!response.ok) {
@@ -73,7 +84,7 @@ export default function App() {
       teamMemberId: "",
       startDate: "",
       endDate: "",
-      reason: ""
+      reason: "",
     });
 
     loadData();
@@ -83,9 +94,9 @@ export default function App() {
     await fetch(`${API_BASE}/api/leave-requests/${id}/status`, {
       method: "PATCH",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify({ status })
+      body: JSON.stringify({ status }),
     });
 
     loadData();
@@ -93,7 +104,40 @@ export default function App() {
 
   async function deleteLeaveRequest(id) {
     await fetch(`${API_BASE}/api/leave-requests/${id}`, {
-      method: "DELETE"
+      method: "DELETE",
+    });
+
+    loadData();
+  }
+
+  function openCommentModal(request) {
+    setCommentModal({
+      isOpen: true,
+      leaveRequestId: request.id,
+      teamMemberName: request.teamMemberName,
+      comment: request.comment || "",
+    });
+  }
+
+  async function saveComment() {
+    await fetch(
+      `${API_BASE}/api/leave-requests/${commentModal.leaveRequestId}/comment`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          comment: commentModal.comment,
+        }),
+      },
+    );
+
+    setCommentModal({
+      isOpen: false,
+      leaveRequestId: null,
+      teamMemberName: "",
+      comment: "",
     });
 
     loadData();
@@ -109,11 +153,11 @@ export default function App() {
         <form onSubmit={createLeaveRequest} className="form">
           <select
             value={form.teamMemberId}
-            onChange={e => setForm({ ...form, teamMemberId: e.target.value })}
+            onChange={(e) => setForm({ ...form, teamMemberId: e.target.value })}
             required
           >
             <option value="">Select team member</option>
-            {teamMembers.map(member => (
+            {teamMembers.map((member) => (
               <option key={member.id} value={member.id}>
                 {member.name}
               </option>
@@ -123,14 +167,14 @@ export default function App() {
           <input
             type="date"
             value={form.startDate}
-            onChange={e => setForm({ ...form, startDate: e.target.value })}
+            onChange={(e) => setForm({ ...form, startDate: e.target.value })}
             required
           />
 
           <input
             type="date"
             value={form.endDate}
-            onChange={e => setForm({ ...form, endDate: e.target.value })}
+            onChange={(e) => setForm({ ...form, endDate: e.target.value })}
             required
           />
 
@@ -138,7 +182,7 @@ export default function App() {
             type="text"
             placeholder="Reason"
             value={form.reason}
-            onChange={e => setForm({ ...form, reason: e.target.value })}
+            onChange={(e) => setForm({ ...form, reason: e.target.value })}
             required
           />
 
@@ -158,7 +202,7 @@ export default function App() {
           <div className="team-list">
             <h2>Team Members</h2>
             <ul>
-              {teamMembers.map(member => (
+              {teamMembers.map((member) => (
                 <li key={member.id}>
                   {member.rotationPosition}. {member.name}
                 </li>
@@ -174,10 +218,12 @@ export default function App() {
         <div className="filters">
           <select
             value={filters.teamMemberId}
-            onChange={e => setFilters({ ...filters, teamMemberId: e.target.value })}
+            onChange={(e) =>
+              setFilters({ ...filters, teamMemberId: e.target.value })
+            }
           >
             <option value="">All team members</option>
-            {teamMembers.map(member => (
+            {teamMembers.map((member) => (
               <option key={member.id} value={member.id}>
                 {member.name}
               </option>
@@ -186,7 +232,7 @@ export default function App() {
 
           <select
             value={filters.status}
-            onChange={e => setFilters({ ...filters, status: e.target.value })}
+            onChange={(e) => setFilters({ ...filters, status: e.target.value })}
           >
             <option value="">All statuses</option>
             <option value="PENDING">Pending</option>
@@ -217,7 +263,7 @@ export default function App() {
             </thead>
 
             <tbody>
-              {leaveRequests.map(request => (
+              {leaveRequests.map((request) => (
                 <tr
                   key={request.id}
                   className={request.status === "PENDING" ? "pending-row" : ""}
@@ -248,6 +294,13 @@ export default function App() {
                     )}
 
                     <button
+                      className="btn comment"
+                      onClick={() => openCommentModal(request)}
+                    >
+                      Comment
+                    </button>
+
+                    <button
                       className="btn delete"
                       onClick={() => deleteLeaveRequest(request.id)}
                     >
@@ -274,7 +327,7 @@ export default function App() {
           </thead>
 
           <tbody>
-            {onCallSchedule.map(week => (
+            {onCallSchedule.map((week) => (
               <tr
                 key={week.weekStart}
                 className={week.hasConflict ? "conflict" : ""}
@@ -286,7 +339,7 @@ export default function App() {
                 <td>
                   {week.hasConflict
                     ? `On approved leave: ${week.conflicts
-                        .map(c => `${c.leaveStart} to ${c.leaveEnd}`)
+                        .map((c) => `${c.leaveStart} to ${c.leaveEnd}`)
                         .join(", ")}`
                     : "No conflict"}
                 </td>
@@ -295,6 +348,46 @@ export default function App() {
           </tbody>
         </table>
       </section>
+
+      {commentModal.isOpen && (
+        <div className="modal-backdrop">
+          <div className="modal">
+            <h2>Comment for {commentModal.teamMemberName}</h2>
+
+            <textarea
+              value={commentModal.comment}
+              onChange={(e) =>
+                setCommentModal({
+                  ...commentModal,
+                  comment: e.target.value,
+                })
+              }
+              placeholder="Write a comment..."
+              rows="6"
+            />
+
+            <div className="modal-actions">
+              <button type="button" onClick={saveComment}>
+                Save
+              </button>
+
+              <button
+                type="button"
+                onClick={() =>
+                  setCommentModal({
+                    isOpen: false,
+                    leaveRequestId: null,
+                    teamMemberName: "",
+                    comment: "",
+                  })
+                }
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </main>
   );
 }

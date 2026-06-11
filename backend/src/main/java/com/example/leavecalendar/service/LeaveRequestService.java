@@ -11,6 +11,7 @@ import com.example.leavecalendar.exception.NotFoundException;
 import com.example.leavecalendar.exception.ValidationException;
 import com.example.leavecalendar.repository.LeaveRequestRepository;
 import com.example.leavecalendar.validation.DateRangeValidator;
+import com.example.leavecalendar.dto.request.UpdateLeaveCommentDto;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -113,6 +114,17 @@ public class LeaveRequestService {
         return toDto(saved);
     }
 
+    public LeaveRequestDto updateComment(Long id, UpdateLeaveCommentDto dto) {
+        LeaveRequest leaveRequest = leaveRequestRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Leave request not found with id: " + id));
+
+        leaveRequest.updateComment(dto.comment());
+
+        LeaveRequest saved = leaveRequestRepository.save(leaveRequest);
+
+        return toDto(saved);
+    }
+
     public List<LeaveRequestDto> listLeaveRequests(Long teamMemberId, LeaveStatus status) {
         return leaveRequestRepository.findByFilters(teamMemberId, status)
                 .stream()
@@ -128,6 +140,7 @@ public class LeaveRequestService {
                 leaveRequest.getStartDate(),
                 leaveRequest.getEndDate(),
                 leaveRequest.getReason(),
-                leaveRequest.getStatus());
+                leaveRequest.getStatus(),
+                leaveRequest.getComment());
     }
 }

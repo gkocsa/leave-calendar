@@ -6,6 +6,7 @@ import com.example.leavecalendar.dto.request.UpdateLeaveStatusDto;
 import com.example.leavecalendar.dto.response.LeaveRequestDto;
 import com.example.leavecalendar.enums.LeaveStatus;
 import com.example.leavecalendar.service.LeaveRequestService;
+import com.example.leavecalendar.dto.request.UpdateLeaveCommentDto;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,15 +42,22 @@ public class LeaveRequestController {
         return leaveRequestService.updateLeaveRequest(id, dto);
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteLeaveRequest(@PathVariable Long id) {
-        leaveRequestService.deleteLeaveRequest(id);
-    }
-
     @PatchMapping("/{id}/status")
     public LeaveRequestDto updateStatus(
             @PathVariable Long id,
             @Valid @RequestBody UpdateLeaveStatusDto dto) {
         return leaveRequestService.updateStatus(id, dto);
+    }
+
+    @PatchMapping("/{id}/comment")
+    public LeaveRequestDto updateComment(
+            @PathVariable Long id,
+            @Valid @RequestBody UpdateLeaveCommentDto dto) {
+        return leaveRequestService.updateComment(id, dto);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteLeaveRequest(@PathVariable Long id) {
+        leaveRequestService.deleteLeaveRequest(id);
     }
 }

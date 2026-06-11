@@ -26,6 +26,9 @@ public class LeaveRequest {
     @Column(nullable = false)
     private String reason;
 
+    @Column(length = 1000)
+    private String comment;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private LeaveStatus status = LeaveStatus.PENDING;
@@ -68,10 +71,18 @@ public class LeaveRequest {
         return reason;
     }
 
+    public String getComment() {
+        return comment;
+    }
+
     public LeaveStatus getStatus() {
         return status;
     }
 
+    public void updateComment(String comment) {
+        this.comment = comment;
+    }
+    
     public void updateStatus(LeaveStatus status) {
         this.status = status;
     }

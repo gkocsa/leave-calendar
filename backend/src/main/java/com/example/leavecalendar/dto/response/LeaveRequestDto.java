@@ -11,6 +11,7 @@ public record LeaveRequestDto(
         LocalDate startDate,
         LocalDate endDate,
         String reason,
-        LeaveStatus status
+        LeaveStatus status,
+        String comment
 ) {
 }

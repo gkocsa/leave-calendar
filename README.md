@@ -48,6 +48,8 @@ http://localhost:8080/api/team-members
 - Only approved leave creates on-call conflicts.
 
 ## Features not completed
+- Calendar month view (Optional)
+- Automatic on-call replacement suggestion (Optional)
 
 ## Optional improvements
 - endpoints for deleting, updating leave requests
