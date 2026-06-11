@@ -48,10 +48,14 @@ http://localhost:8080/api/team-members
 - Only approved leave creates on-call conflicts.
 
 ## Features not completed
-- Calendar month view (Optional)
-- Automatic on-call replacement suggestion (Optional)
+- (Optional) Calendar month view 
+- (Optional) Automatic on-call replacement suggestion 
+- (Optional) Leave approval workflow / Better than basic requirments but could be improved
+- (Optional) Better visual conflict highlighting / Better than basic requirments but could be improved
 
 ## Optional improvements
-- endpoints for deleting, updating leave requests
+- Endpoints for deleting, updating leave requests
 - Dockerization
-- Added filtering for by team member or status
+- Filtering for by team member or status
+- Comments
+- 
